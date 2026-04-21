@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pat's Cybersecurity Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-elev: #151c25;
+  --bg-card: #1a232e;
+  --bg-deep: #080c11;
+  --border: #253041;
+  --border-bright: #3a4b64;
+  --ink: #e8e2d4;
+  --ink-dim: #a8a094;
+  --ink-faint: #6c6b64;
+  --accent: #e8a545;
+  --accent-bright: #f5c070;
+  --accent-deep: #a56f1a;
+  --cyan: #7ec4cf;
+  --danger: #d46a5e;
+  --ok: #8bc085;
+  --serif-display: "Instrument Serif", serif;
+  --serif: "Fraunces", serif;
+  --mono: "JetBrains Mono", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 140px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 350;
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at top, rgba(232, 165, 69, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(126, 196, 207, 0.03) 0%, transparent 60%);
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.008) 0px,
+    rgba(255, 255, 255, 0.008) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* HEADER */
+.header {
+  padding: 80px 0 40px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  position: relative;
+}
+
+.header-meta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 32px;
+}
+
+.header-meta span::before {
+  content: '//';
+  margin-right: 8px;
+  color: var(--accent);
+}
+
+.header h1 {
+  font-family: var(--serif-display);
+  font-size: clamp(54px, 9vw, 96px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header .tagline {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--ink-dim);
+  max-width: 680px;
+  font-style: italic;
+}
+
+.header-strip {
+  margin-top: 40px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.strip-item .label {
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.strip-item .value {
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* PROGRESS */
+.progress-section {
+  padding: 24px 0 0;
+  margin-bottom: 24px;
+}
+
+.progress-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-label .count {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  width: 0%;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* TABS */
+.nav {
+  position: sticky;
+  top: 0;
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  margin: 0 -24px;
+  padding: 0 24px;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 2px;
+}
+
+.nav-inner::-webkit-scrollbar { display: none; }
+
+.tab {
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab .tab-num {
+  color: var(--ink-faint);
+  margin-right: 6px;
+  font-weight: 400;
+}
+
+.tab.active .tab-num { color: var(--accent-deep); }
+
+/* WEEK SUB-TABS */
+.week-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-tabs::-webkit-scrollbar { display: none; }
+
+.week-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.week-tab:hover {
+  color: var(--ink);
+  border-color: var(--border-bright);
+}
+
+.week-tab.active {
+  background: var(--accent);
+  color: var(--bg-deep);
+  border-color: var(--accent);
+}
+
+/* CONTENT AREAS */
+.phase-section {
+  display: none;
+  padding: 32px 0 80px;
+  animation: fade-in 0.3s ease;
+}
+
+.phase-section.active { display: block; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.week-content {
+  display: none;
+}
+
+.week-content.active { display: block; }
+
+.section-intro {
+  padding: 24px 28px;
+  background: var(--bg-card);
+  border-left: 3px solid var(--cyan);
+  margin-bottom: 40px;
+}
+
+.section-intro h2 {
+  font-family: var(--serif-display);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.section-intro h2 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.section-intro p {
+  color: var(--ink-dim);
+  font-size: 17px;
+  max-width: 760px;
+  font-style: italic;
+}
+
+/* WEEK HEADER */
+.week-header {
+  padding: 24px 0 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-header .eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.week-header h3 {
+  font-family: var(--serif-display);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.week-header h3 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.week-header .week-meta {
+  display: flex;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+/* CONTENT BLOCKS */
+.block {
+  margin-bottom: 32px;
+}
+
+.block h4 {
+  font-family: var(--serif-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.block h5 {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 20px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border-bright);
+}
+
+.block p {
+  color: var(--ink);
+  margin-bottom: 14px;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.block p.lead {
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.block strong {
+  color: var(--accent-bright);
+  font-weight: 500;
+}
+
+.block code {
+  font-family: var(--mono);
+  background: var(--bg-deep);
+  color: var(--accent-bright);
+  padding: 2px 7px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+/* TASK LIST */
+.tasks {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+
+.task {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  align-items: flex-start;
+}
+
+.task:last-child { border-bottom: none; }
+
+.task input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-bright);
+  background: var(--bg-deep);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 4px;
+  transition: all 0.15s;
+}
+
+.task input[type="checkbox"]:hover { border-color: var(--accent); }
+
+.task input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.task input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 11px;
+  border: solid var(--bg-deep);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.task label {
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink);
+  flex: 1;
+}
+
+.task input:checked + label {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--accent-deep);
+}
+
+/* CALLOUT BOX */
+.callout {
+  padding: 18px 22px;
+  margin: 20px 0;
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(90deg, rgba(232, 165, 69, 0.05), transparent 60%);
+}
+
+.callout.warning {
+  border-left-color: var(--danger);
+  background: linear-gradient(90deg, rgba(212, 106, 94, 0.05), transparent 60%);
+}
+
+.callout.tip {
+  border-left-color: var(--cyan);
+  background: linear-gradient(90deg, rgba(126, 196, 207, 0.05), transparent 60%);
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.callout.warning .callout-label { color: var(--danger); }
+.callout.tip .callout-label { color: var(--cyan); }
+
+.callout p { margin-bottom: 0; color: var(--ink); }
+.callout p + p { margin-top: 10px; }
+
+/* RESOURCE CARDS */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.resource {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 16px;
+  transition: all 0.15s;
+}
+
+.resource:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-1px);
+}
+
+.resource .rtype {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+
+.resource .rtype.free { color: var(--ok); }
+.resource .rtype.paid { color: var(--accent); }
+
+.resource .rname {
+  font-family: var(--serif-display);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.resource .rdesc {
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+/* CODE BLOCKS */
+.code-block {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block .comment { color: var(--ink-faint); font-style: italic; }
+.code-block .keyword { color: var(--cyan); }
+.code-block .string { color: var(--ok); }
+.code-block .number { color: var(--accent-bright); }
+.code-block .fn { color: var(--accent); }
+
+.code-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+  padding-left: 4px;
+}
+
+/* EXERCISE BOX */
+.exercise {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.exercise-title {
+  font-family: var(--serif-display);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--cyan);
+}
+
+.exercise-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.exercise .challenge {
+  background: var(--bg-deep);
+  padding: 12px 16px;
+  border-left: 2px solid var(--accent);
+  margin: 12px 0;
+  font-size: 14.5px;
+}
+
+.solution-toggle {
+  background: none;
+  border: 1px dashed var(--border-bright);
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.15s;
+}
+
+.solution-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.solution {
+  display: none;
+  margin-top: 14px;
+}
+
+.solution.visible { display: block; }
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-bright);
+  background: var(--bg-card);
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+}
+
+.data-table tr:hover td { background: var(--bg-card); }
+
+/* DETAILS/SUMMARY for collapsed content */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  margin: 14px 0;
+  transition: all 0.2s;
+}
+
+details[open] { border-color: var(--border-bright); }
+
+summary {
+  padding: 14px 18px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 500;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::after {
+  content: '+';
+  color: var(--accent);
+  font-size: 18px;
+  font-family: var(--mono);
+}
+
+details[open] summary::after { content: '−'; }
+
+details > *:not(summary) {
+  padding: 0 18px 16px;
+}
+
+/* FOOTER */
+.footer {
+  padding: 60px 0 80px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  line-height: 1.8;
+}
+
+.footer .sig {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+/* PRINT */
+@media print {
+  .nav, .week-tabs, .progress-section { display: none !important; }
+  .phase-section { display: block !important; page-break-before: always; }
+  .week-content { display: block !important; }
+  body { background: white; color: black; }
+  .block, .callout, .tasks, .exercise, details[open] { background: white; border-color: #ddd; color: black; }
+  summary::after { display: none; }
+  details[open] > *:not(summary) { padding: 0; }
+}
+
+@media (max-width: 700px) {
+  .header { padding: 48px 0 32px; }
+  .header h1 { font-size: 48px; }
+  .header-strip { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .week-header h3 { font-size: 32px; }
+  .section-intro h2 { font-size: 32px; }
+}
+
+/* Selection */
+::selection { background: var(--accent); color: var(--bg-deep); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-meta">
+      <span>Field Manual</span>
+      <span>Rev. 1.0</span>
+      <span>Classification: Cohort of One</span>
+    </div>
+    <h1>Pat's Cybersecurity <em>Field Manual</em></h1>
+    <p class="tagline">From zero to GRC, in 36 weeks. A tactical study guide built around how you actually learn.</p>
+
+    <div class="header-strip">
+      <div class="strip-item">
+        <span class="label">Starting Point</span>
+        <span class="value">Tech comfort 2/10</span>
+      </div>
+      <div class="strip-item">
+        <span class="label">End State</span>
+        <span class="value">GRC Analyst, employable</span>
+      </div>
+      <div class="strip-item">
+        <span class="label">Weekly Tempo</span>
+        <span class="value">21 hours</span>
+      </div>
+      <div class="strip-item">
+        <span class="label">Total Horizon</span>
+        <span class="value">8 to 9 months</span>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Mission Progress</span>
+        <span class="count"><span id="progress-count">0</span> / <span id="progress-total">0</span> tasks</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOP NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <button class="tab active" data-phase="overview"><span class="tab-num">00</span>Overview</button>
+      <button class="tab" data-phase="phase0"><span class="tab-num">01</span>Pre-flight</button>
+      <button class="tab" data-phase="phase1"><span class="tab-num">02</span>Google Cert</button>
+      <button class="tab" data-phase="python"><span class="tab-num">03</span>Python From Zero</button>
+      <button class="tab" data-phase="phase2"><span class="tab-num">04</span>Security+</button>
+      <button class="tab" data-phase="phase3"><span class="tab-num">05</span>GRC Mastery</button>
+      <button class="tab" data-phase="habits"><span class="tab-num">06</span>Habits</button>
+      <button class="tab" data-phase="resources"><span class="tab-num">07</span>Resources</button>
+    </div>
+  </nav>
+
+  <!-- =================== OVERVIEW =================== -->
+  <section class="phase-section active" id="overview">
+    <div class="section-intro">
+      <h2>The <em>Plan</em></h2>
+      <p>Built from your questionnaire. Every decision here is keyed to something you told Athan: GRC as the endgame, slow foundation building, no coding background, and the simple promise that you finish what you start.</p>
+    </div>
+
+    <div class="block">
+      <h4>Why this specific plan</h4>
+      <p><strong>You chose GRC as the destination.</strong> That single choice does more work in this plan than any other. GRC is the most math-light, writing-heavy, work-life-balance-friendly track in cybersecurity. Your math concern basically disappears. Your concern about coding becomes a mild advantage rather than a blocker (GRC analysts benefit from some Python literacy but rarely write production code).</p>
+      <p><strong>You said you are slow at building foundations.</strong> This plan front-loads everything. Two weeks of pre-flight before you ever open Coursera. Extra time budgeted for the hardest courses. A dedicated "Python From Zero" section (Tab 03) that starts before variables and ends at real cybersecurity automation. The pacing matches your pacing.</p>
+      <p><strong>You already get six of the ten core concepts.</strong> Course 1 of the Google Cert will be confirmation and vocabulary tightening, not new material. That is a soft landing for momentum.</p>
+    </div>
+
+    <div class="block">
+      <h4>The four phases</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>Phase</th><th>What happens</th><th>Duration</th><th>Outcome</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pre-flight</td><td>Typing, file system, terminal basics, tool install</td><td>2 weeks</td><td>Digital fluency</td></tr>
+          <tr><td>Google Cert</td><td>8 courses on Coursera, paced for your speed</td><td>10 to 12 weeks</td><td>Certificate + $400 Security+ discount</td></tr>
+          <tr><td>Security+</td><td>SY0-701 exam prep and test day</td><td>8 to 10 weeks</td><td>Industry-standard credential</td></tr>
+          <tr><td>GRC Mastery</td><td>Frameworks, tooling, portfolio, job search</td><td>10 to 12 weeks</td><td>Employable GRC candidate</td></tr>
+        </tbody>
+      </table>
+      <p>Total: 30 to 36 weeks. You have 36 to 39 weeks in your 8 to 9 month window, so there is genuine slack built in for illness, travel, or a rough stretch. Do not burn the slack early.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Note on Python From Zero</div>
+      <p>The Google Cert's Course 7 promises to teach Python "from scratch." What it actually means is that it teaches someone who has touched a programming language before. Since you have not, that course would hit you like a brick wall. The Python From Zero tab in this guide is separate work that runs in parallel with Phase 0 and the early weeks of Phase 1. It bridges the gap between "has never coded" and "can survive a Python 101 course." Treat it as non-negotiable.</p>
+    </div>
+
+    <div class="block">
+      <h4>How to use this manual</h4>
+      <p>Every checkbox here is persistent. You check things off, close the tab, and when you open the file tomorrow your progress is still there (it's saved in your browser locally, so keep using the same browser). The progress bar at the top reflects your actual completion against the total task count.</p>
+      <p>The phases are tabbed at the top. Within each phase, weeks are sub-tabbed. Jump around freely; this is a reference, not a novel. That said, the order is not arbitrary. Skipping Pre-flight will cost you.</p>
+      <p>When you get stuck, use the Habits tab. When you need a specific video or tool, use the Resources tab. Everything else lives in its phase.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-label">One Promise</div>
+      <p>Twenty-one hours per week for thirty-six weeks is 756 hours. That is more than enough to complete everything in this manual. The plan is enough. The only variable now is you. And you already told us what you are: someone who finishes what they start.</p>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 0 =================== -->
+  <section class="phase-section" id="phase0">
+    <div class="section-intro">
+      <h2>Phase Zero. <em>Pre-flight.</em></h2>
+      <p>Two weeks. Before Coursera. Before certifications. Before anything that looks like "real" cybersecurity work. Boring on paper, decisive in practice.</p>
+    </div>
+
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="p0-w1">Week 1</button>
+      <button class="week-tab" data-week="p0-w2">Week 2</button>
+      <button class="week-tab" data-week="p0-chk">Checkpoint</button>
+    </div>
+
+    <div class="week-content active" id="p0-w1">
+      <div class="week-header">
+        <div class="eyebrow">Phase 0 / Week 1</div>
+        <h3>Fluency with the <em>machine</em></h3>
+        <div class="week-meta"><span>Target: 3 hrs/day</span><span>Difficulty: Gentle</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">Stop being a passive computer user. Start being an active one. This week has no cybersecurity content in it at all. That is intentional.</p>
+      </div>
+
+      <div class="block">
+        <h5>Daily tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p0w1-1"><label for="t-p0w1-1"><strong>Typing practice, 20 min/day.</strong> Use keybr.com or monkeytype.com. Target 50 words per minute by end of week. Slow typing will drain you across every course; fix it now.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-2"><label for="t-p0w1-2"><strong>File system tour, 1 hr/day for three days.</strong> Open your file manager. Go to the root directory. Understand what a "path" is. Navigate to your Documents folder using only keyboard shortcuts. Create, rename, move, and delete test files. This sounds basic because it is.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-3"><label for="t-p0w1-3"><strong>Learn keyboard shortcuts.</strong> Cmd/Ctrl+Tab, Cmd/Ctrl+Space (Mac) or Win key (Windows), Cmd/Ctrl+C, V, X, Z, Shift+Z, Arrow key text selection. Drill these until they are muscle memory.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-4"><label for="t-p0w1-4"><strong>Set up your project folder.</strong> Create a folder called <code>Cybersecurity</code>. Inside it: <code>Notes</code>, <code>Projects</code>, <code>Certs</code>, <code>Resources</code>, <code>Python</code>. This is your workspace for nine months.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-5"><label for="t-p0w1-5"><strong>Install Chrome or Firefox</strong> (not Safari, not Edge as the primary). Coursera and most labs assume Chromium-based browsers.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-6"><label for="t-p0w1-6"><strong>Install Bitwarden</strong> (free password manager). Import or recreate your common logins inside it. This is the last hour this week that is explicitly security-relevant.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-7"><label for="t-p0w1-7"><strong>Install Obsidian</strong> (free note-taking app). Create your vault inside the <code>Cybersecurity/Notes</code> folder. Create four files: <code>Glossary.md</code>, <code>Questions.md</code>, <code>Projects.md</code>, <code>Weekly-Review.md</code>.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w1-8"><label for="t-p0w1-8"><strong>Install Discord.</strong> You will use this to join study communities in Week 3.</label></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Why typing matters</div>
+        <p>Cybersecurity is a typing-heavy field. Every lab, every command, every note. If you type at 25 wpm instead of 50, you are literally halving your throughput for the next nine months. Twenty minutes a day on keybr.com for two weeks is the highest-ROI thing you can do right now.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p0-w2">
+      <div class="week-header">
+        <div class="eyebrow">Phase 0 / Week 2</div>
+        <h3>First contact with the <em>terminal</em></h3>
+        <div class="week-meta"><span>Target: 3 hrs/day</span><span>Difficulty: Gentle</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">The command line is where a lot of real security work happens. Course 4 of the Google Cert throws you into it without ceremony. This week, you get a friendly introduction in a safe browser sandbox before that happens.</p>
+      </div>
+
+      <div class="block">
+        <h5>Daily tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p0w2-1"><label for="t-p0w2-1"><strong>NetworkChuck's "Linux for Hackers" playlist, episodes 1 to 5.</strong> Free on YouTube. Watch one per day. Follow along in a browser-based terminal at webminal.org (no install required) so you are actually typing the commands, not just watching.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w2-2"><label for="t-p0w2-2"><strong>Master these seven commands:</strong> <code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>touch</code>, <code>cat</code>, <code>rm</code>. Use them enough that you do not need to look them up.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w2-3"><label for="t-p0w2-3"><strong>If on Windows: install WSL Ubuntu.</strong> Open PowerShell as admin, run <code>wsl --install</code>, restart. Done. You now have a real Linux environment without dual-booting.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w2-4"><label for="t-p0w2-4"><strong>If on Mac: open Terminal.app</strong> from Applications > Utilities. Try the same seven commands. Most work identically to Linux.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w2-5"><label for="t-p0w2-5"><strong>Watch two or three "How the Internet Works" videos</strong> on YouTube. Different creators, same topic. Build a gut sense of how data moves from your browser to a server.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0w2-6"><label for="t-p0w2-6"><strong>Start Python From Zero (Tab 03) Lesson 1.</strong> Do not wait for Phase 1 to begin. You need this running in parallel.</label></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">The small win</div>
+        <p>By the end of Week 2 you will have opened a terminal, created a folder with a command, put a file inside it, and read the file back out. That sounds trivial. It is not. Most people who fail Course 4 fail because this exact sequence is new to them when it hits.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p0-chk">
+      <div class="week-header">
+        <div class="eyebrow">Phase 0 / Checkpoint</div>
+        <h3>Before you <em>proceed</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Can you do all five of these without looking anything up? If yes, start Phase 1. If not, spend another week on Phase 0. There is no shame in it; there is only cost savings.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p0chk-1"><label for="t-p0chk-1">Open a terminal and run <code>ls</code>, <code>cd Documents</code>, <code>pwd</code>, <code>mkdir test-folder</code>, and <code>cd test-folder</code> in sequence.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0chk-2"><label for="t-p0chk-2">Type at 50 words per minute or above on keybr.com.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0chk-3"><label for="t-p0chk-3">Explain (out loud, to yourself or someone else) what happens when you type "google.com" into a browser. Imperfect is fine.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0chk-4"><label for="t-p0chk-4">Show me your <code>Cybersecurity</code> folder structure with all subfolders and Obsidian vault set up.</label></div>
+          <div class="task"><input type="checkbox" id="t-p0chk-5"><label for="t-p0chk-5">Completed Python From Zero lessons 1 and 2 (installation and first script).</label></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PYTHON FROM ZERO =================== -->
+  <section class="phase-section" id="python">
+    <div class="section-intro">
+      <h2>Python From <em>Zero</em></h2>
+      <p>You have never written code. Good. No bad habits to unlearn. These lessons assume literally nothing. Start in Phase 0 Week 2 and keep going in parallel with the Google Cert until you finish. By the time Course 7 (Python) hits you in week 11-ish of Phase 1, the course will feel like review.</p>
+    </div>
+
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="py-l0">L0. What is code?</button>
+      <button class="week-tab" data-week="py-l1">L1. Install</button>
+      <button class="week-tab" data-week="py-l2">L2. First script</button>
+      <button class="week-tab" data-week="py-l3">L3. Variables</button>
+      <button class="week-tab" data-week="py-l4">L4. Input &amp; if</button>
+      <button class="week-tab" data-week="py-l5">L5. Loops</button>
+      <button class="week-tab" data-week="py-l6">L6. Lists &amp; dicts</button>
+      <button class="week-tab" data-week="py-l7">L7. Functions</button>
+      <button class="week-tab" data-week="py-l8">L8. Files</button>
+      <button class="week-tab" data-week="py-l9">L9. Projects</button>
+    </div>
+
+    <!-- PY LESSON 0 -->
+    <div class="week-content active" id="py-l0">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 0</div>
+        <h3>What <em>code</em> actually is</h3>
+      </div>
+      <div class="block">
+        <p class="lead">Code is instructions for a computer, written in a language the computer understands. That is the whole thing. The mystique around programming is mostly manufactured.</p>
+        <p>Your computer already runs millions of lines of code every second just to draw the words on this screen. When you open a browser, code runs. When you click a button, code runs. Writing code just means writing some of those instructions yourself instead of running code someone else wrote.</p>
+        <p><strong>Python</strong> is one of those languages. It is the most beginner-friendly, the most common in cybersecurity automation, and the language the Google Cert's Course 7 uses. We picked it for you.</p>
+        <p>Python looks roughly like this:</p>
+        <div class="code-label">example.py</div>
+        <div class="code-block"><span class="comment"># This is a comment. Python ignores it.</span>
+<span class="keyword">print</span>(<span class="string">"Hello, Pat"</span>)
+
+<span class="keyword">if</span> <span class="number">5</span> &gt; <span class="number">3</span>:
+    <span class="keyword">print</span>(<span class="string">"Five is indeed greater than three."</span>)</div>
+        <p>You do not need to understand that yet. Notice only: lines of text, mostly English-like words, with some punctuation. That is what you will be writing.</p>
+      </div>
+      <div class="callout tip">
+        <div class="callout-label">Mindset</div>
+        <p>You will stare at errors. A lot. Every programmer does, forever, no matter how senior. Debugging (reading the error, figuring out what is wrong, fixing it) is roughly 70 percent of the job. The skill is not writing perfect code; the skill is being calm enough to read the error message and deal with it. This is the actual skill you are building here.</p>
+      </div>
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl0-1"><label for="t-pyl0-1">Read this page twice. That is the whole assignment.</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 1 -->
+    <div class="week-content" id="py-l1">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 1</div>
+        <h3>Install Python and <em>VSCode</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">You need two things installed: Python itself (the language runtime) and VSCode (the editor where you write the code). This takes about 20 minutes total.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 1: Install Python</h5>
+        <p><strong>On Windows:</strong> Open the Microsoft Store, search for "Python 3.12" (or the latest stable version), click Install. Alternative: go to python.org/downloads, click the big yellow button, run the installer, and <strong>check the box that says "Add Python to PATH"</strong>. That checkbox is critical; do not skip it.</p>
+        <p><strong>On Mac:</strong> Open Terminal and type <code>python3 --version</code>. If it prints a version number (like 3.x.x), you already have it. If not, go to python.org/downloads and install from there.</p>
+        <p><strong>On WSL Ubuntu (if you set it up in Phase 0):</strong> Python is already installed. Confirm with <code>python3 --version</code>.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 2: Install VSCode</h5>
+        <p>VSCode (Visual Studio Code) is the editor. Free, made by Microsoft, works on every OS, is the most popular editor in the world for a reason.</p>
+        <p>Go to code.visualstudio.com, click Download, run the installer. On Windows the installer asks a few things; accept the defaults.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 3: Install the Python extension in VSCode</h5>
+        <p>Open VSCode. On the left sidebar, click the icon that looks like four squares (Extensions). Search for "Python". Install the one published by Microsoft (it will say "Microsoft" next to it). That is it.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 4: Confirm it works</h5>
+        <p>Open VSCode. Press Ctrl+` (backtick, that thing next to the 1 key) or go to Terminal > New Terminal. A terminal opens at the bottom of VSCode. Type:</p>
+        <div class="code-block"><span class="keyword">python3</span> --version</div>
+        <p>On Windows you may need to type <code>python --version</code> instead (no 3). Either way, you should see a version number print out. If you do, you are done with installation.</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-label">If it doesn't work</div>
+        <p>If typing the version command gives you "command not found" or similar, Python is not on your system's PATH. On Windows, uninstall Python and reinstall it with the PATH checkbox checked. On Mac, try <code>python3</code> instead of <code>python</code>. Post in r/learnpython if you are truly stuck; the community is fast.</p>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl1-1"><label for="t-pyl1-1">Python installed and version verified from terminal</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl1-2"><label for="t-pyl1-2">VSCode installed and opens</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl1-3"><label for="t-pyl1-3">Python extension installed in VSCode</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 2 -->
+    <div class="week-content" id="py-l2">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 2</div>
+        <h3>Your first <em>script</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">You will now write, save, and run code. This is a big moment. Most people who learn to code remember their first "Hello World" forever.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 1: Create a file</h5>
+        <p>In VSCode, click File > Open Folder. Navigate to your <code>Cybersecurity/Python</code> folder you made in Phase 0. Open it. Now click File > New File. Call it <code>hello.py</code>. The <code>.py</code> extension tells the computer this is a Python file.</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 2: Write code</h5>
+        <p>Type exactly this into the file:</p>
+        <div class="code-label">hello.py</div>
+        <div class="code-block"><span class="keyword">print</span>(<span class="string">"Hello, Pat. Welcome to cybersecurity."</span>)</div>
+        <p>Save it (Ctrl+S or Cmd+S).</p>
+      </div>
+
+      <div class="block">
+        <h5>Step 3: Run it</h5>
+        <p>Open the VSCode terminal (Ctrl+` again). Type:</p>
+        <div class="code-block"><span class="keyword">python3</span> hello.py</div>
+        <p>On Windows, <code>python hello.py</code>. Press Enter.</p>
+        <p>You should see: <code>Hello, Pat. Welcome to cybersecurity.</code></p>
+        <p>You just wrote, saved, and executed your first program. The computer read your instructions and obeyed them.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 2.1</div>
+          <div class="exercise-number">Req. 1/1</div>
+        </div>
+        <div class="challenge">Modify <code>hello.py</code> to print three different lines. One saying your name, one saying your goal (become a GRC analyst), and one saying something motivating. Use three separate <code>print()</code> statements.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block"><span class="keyword">print</span>(<span class="string">"My name is Pat."</span>)
+<span class="keyword">print</span>(<span class="string">"I am going to become a GRC analyst."</span>)
+<span class="keyword">print</span>(<span class="string">"Today I wrote my first program."</span>)</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl2-1"><label for="t-pyl2-1">Successfully ran hello.py</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl2-2"><label for="t-pyl2-2">Completed Exercise 2.1</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 3 -->
+    <div class="week-content" id="py-l3">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 3</div>
+        <h3>Variables and <em>types</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">A variable is a named box that holds a value. You put something in it, you take it out, you change it. That is all.</p>
+        <div class="code-label">variables.py</div>
+        <div class="code-block"><span class="comment"># A variable called "name" that holds a string (text)</span>
+name = <span class="string">"Pat"</span>
+
+<span class="comment"># A variable called "age" that holds a number</span>
+age = <span class="number">27</span>
+
+<span class="comment"># A variable called "is_studying" that holds a boolean (True or False)</span>
+is_studying = <span class="keyword">True</span>
+
+<span class="keyword">print</span>(name)
+<span class="keyword">print</span>(age)
+<span class="keyword">print</span>(is_studying)</div>
+        <p>Run it. You will see <code>Pat</code>, <code>27</code>, and <code>True</code> printed.</p>
+      </div>
+
+      <div class="block">
+        <h5>The three types you need to know today</h5>
+        <table class="data-table">
+          <thead><tr><th>Type</th><th>Example</th><th>What it is</th></tr></thead>
+          <tbody>
+            <tr><td><code>str</code> (string)</td><td><code>"hello"</code></td><td>Text. Always in quotes.</td></tr>
+            <tr><td><code>int</code> (integer)</td><td><code>42</code></td><td>Whole numbers. No quotes.</td></tr>
+            <tr><td><code>bool</code> (boolean)</td><td><code>True</code> or <code>False</code></td><td>Yes/no. Capital T and F.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <h5>String concatenation</h5>
+        <p>You can join strings with the <code>+</code> sign:</p>
+        <div class="code-block">first = <span class="string">"Pat"</span>
+last = <span class="string">"Smith"</span>
+full = first + <span class="string">" "</span> + last
+<span class="keyword">print</span>(full)  <span class="comment"># prints: Pat Smith</span></div>
+        <p>Or, better, use f-strings (formatted strings). They are cleaner:</p>
+        <div class="code-block">name = <span class="string">"Pat"</span>
+age = <span class="number">27</span>
+<span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Hello {name}, you are {age} years old."</span>)</div>
+        <p>The <code>f</code> before the quote makes it a "formatted string." Anything inside <code>{curly braces}</code> gets replaced with the value of that variable.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 3.1: Identity card</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Create a new file <code>identity.py</code>. Make four variables: your name, your age, your target job title (a string), and whether you are currently enrolled (a boolean). Print a single line using an f-string that reads like: "Pat, 27, aspiring GRC Analyst. Currently enrolled: True."</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">name = <span class="string">"Pat"</span>
+age = <span class="number">27</span>
+goal = <span class="string">"aspiring GRC Analyst"</span>
+enrolled = <span class="keyword">True</span>
+
+<span class="keyword">print</span>(<span class="fn">f</span><span class="string">"{name}, {age}, {goal}. Currently enrolled: {enrolled}"</span>)</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 3.2: Math with variables</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Create variables <code>hours_per_week</code> (set to 21) and <code>weeks</code> (set to 36). Calculate total study hours and print: "Over the 9-month plan, I will study X hours total." The X should be the calculated number.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">hours_per_week = <span class="number">21</span>
+weeks = <span class="number">36</span>
+total = hours_per_week * weeks
+<span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Over the 9-month plan, I will study {total} hours total."</span>)</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl3-1"><label for="t-pyl3-1">Completed Exercise 3.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl3-2"><label for="t-pyl3-2">Completed Exercise 3.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 4 -->
+    <div class="week-content" id="py-l4">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 4</div>
+        <h3>Getting input and making <em>decisions</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Real programs take information in, make decisions, and respond. Today you learn both halves.</p>
+      </div>
+
+      <div class="block">
+        <h5>input() gets something from the user</h5>
+        <div class="code-block">name = <span class="fn">input</span>(<span class="string">"What is your name? "</span>)
+<span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Hello, {name}."</span>)</div>
+        <p>When you run this, Python pauses and waits. Whatever you type before pressing Enter gets stored in <code>name</code>.</p>
+        <p><strong>Important:</strong> <code>input()</code> always returns a string, even if you typed a number. If you need a number, convert it: <code>age = int(input("Age? "))</code>.</p>
+      </div>
+
+      <div class="block">
+        <h5>if / elif / else</h5>
+        <p>Decisions in Python look like this:</p>
+        <div class="code-block">age = <span class="fn">int</span>(<span class="fn">input</span>(<span class="string">"How old are you? "</span>))
+
+<span class="keyword">if</span> age &lt; <span class="number">18</span>:
+    <span class="keyword">print</span>(<span class="string">"Minor"</span>)
+<span class="keyword">elif</span> age &lt; <span class="number">65</span>:
+    <span class="keyword">print</span>(<span class="string">"Adult"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Senior"</span>)</div>
+        <p>Note the colons at the end of each condition, and the indentation (4 spaces) on the lines underneath. <strong>Python cares a lot about indentation.</strong> It is how Python knows what code belongs to the <code>if</code>. Mess up the indentation and you will get errors.</p>
+      </div>
+
+      <div class="block">
+        <h5>Comparison and logical operators</h5>
+        <table class="data-table">
+          <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>Equal to (two equals signs, not one)</td></tr>
+            <tr><td><code>!=</code></td><td>Not equal to</td></tr>
+            <tr><td><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td>Less than, greater than, less or equal, greater or equal</td></tr>
+            <tr><td><code>and</code></td><td>Both sides must be true</td></tr>
+            <tr><td><code>or</code></td><td>Either side can be true</td></tr>
+            <tr><td><code>not</code></td><td>Flips true to false and vice versa</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-label">Classic mistake</div>
+        <p>Using <code>=</code> (single equals) inside an <code>if</code> statement. The single equals sign is for assignment. The double equals <code>==</code> is for comparison. If you write <code>if age = 18:</code> Python will throw an error. Write <code>if age == 18:</code>.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 4.1: Password length checker</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Write a script that asks for a password, then prints "Weak" if it is under 8 characters, "Medium" if 8 to 11, "Strong" if 12 or more. Hint: <code>len(password)</code> gives you the length of a string.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">password = <span class="fn">input</span>(<span class="string">"Enter a password: "</span>)
+length = <span class="fn">len</span>(password)
+
+<span class="keyword">if</span> length &lt; <span class="number">8</span>:
+    <span class="keyword">print</span>(<span class="string">"Weak"</span>)
+<span class="keyword">elif</span> length &lt; <span class="number">12</span>:
+    <span class="keyword">print</span>(<span class="string">"Medium"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Strong"</span>)</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 4.2: Login attempt simulator</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Create a script that stores a "correct" username ("admin") and password ("s3cur3!") in variables. Ask the user to input both. Print "Access granted" only if both match, otherwise "Access denied". Use <code>and</code> in your condition.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">correct_user = <span class="string">"admin"</span>
+correct_pass = <span class="string">"s3cur3!"</span>
+
+user = <span class="fn">input</span>(<span class="string">"Username: "</span>)
+password = <span class="fn">input</span>(<span class="string">"Password: "</span>)
+
+<span class="keyword">if</span> user == correct_user <span class="keyword">and</span> password == correct_pass:
+    <span class="keyword">print</span>(<span class="string">"Access granted"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Access denied"</span>)</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl4-1"><label for="t-pyl4-1">Completed Exercise 4.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl4-2"><label for="t-pyl4-2">Completed Exercise 4.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 5 -->
+    <div class="week-content" id="py-l5">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 5</div>
+        <h3>Loops: doing things <em>many times</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Loops let you run the same code over and over. Most automation in cybersecurity is loops plus conditions.</p>
+      </div>
+
+      <div class="block">
+        <h5>for loop</h5>
+        <p>For loops repeat a block of code for each item in something. Most common use: count from 0 to some number.</p>
+        <div class="code-block"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="fn">range</span>(<span class="number">5</span>):
+    <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"This is iteration {i}"</span>)</div>
+        <p>This prints 0, 1, 2, 3, 4. <code>range(5)</code> produces five numbers starting from 0. <code>range(1, 6)</code> produces 1 to 5. <code>range(0, 10, 2)</code> produces 0, 2, 4, 6, 8.</p>
+      </div>
+
+      <div class="block">
+        <h5>while loop</h5>
+        <p>While loops repeat as long as a condition is true.</p>
+        <div class="code-block">attempts = <span class="number">0</span>
+<span class="keyword">while</span> attempts &lt; <span class="number">3</span>:
+    password = <span class="fn">input</span>(<span class="string">"Password: "</span>)
+    <span class="keyword">if</span> password == <span class="string">"s3cur3!"</span>:
+        <span class="keyword">print</span>(<span class="string">"Access granted"</span>)
+        <span class="keyword">break</span>
+    attempts = attempts + <span class="number">1</span>
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Locked out"</span>)</div>
+        <p>Two new things: <code>break</code> exits a loop early. The <code>else</code> on a while loop runs only if the loop ended naturally (not via break). That is a handy Python feature.</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-label">Infinite loops</div>
+        <p>If the condition in a while loop never becomes false, the loop runs forever and locks up your terminal. Press Ctrl+C to kill it. Classic mistake: forgetting to update the variable that the condition checks. Always make sure something inside the loop moves the condition toward false.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 5.1: Countdown</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Print a countdown from 10 to 1, then print "Launch!". Use a for loop and <code>range()</code>. Hint: <code>range()</code> can count backwards if you pass three arguments.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="fn">range</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">-1</span>):
+    <span class="keyword">print</span>(i)
+<span class="keyword">print</span>(<span class="string">"Launch!"</span>)</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 5.2: Three-try login</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Rewrite Exercise 4.2 to give the user three tries. If they fail all three, print "Account locked." If they succeed, print "Access granted" and stop asking.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">correct_pass = <span class="string">"s3cur3!"</span>
+attempts = <span class="number">0</span>
+max_attempts = <span class="number">3</span>
+
+<span class="keyword">while</span> attempts &lt; max_attempts:
+    pw = <span class="fn">input</span>(<span class="string">"Password: "</span>)
+    <span class="keyword">if</span> pw == correct_pass:
+        <span class="keyword">print</span>(<span class="string">"Access granted"</span>)
+        <span class="keyword">break</span>
+    attempts = attempts + <span class="number">1</span>
+    <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Wrong. {max_attempts - attempts} tries left."</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Account locked."</span>)</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl5-1"><label for="t-pyl5-1">Completed Exercise 5.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl5-2"><label for="t-pyl5-2">Completed Exercise 5.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 6 -->
+    <div class="week-content" id="py-l6">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 6</div>
+        <h3>Lists and <em>dictionaries</em></h3>
+      </div>
+
+      <div class="block">
+        <h5>Lists: ordered collections</h5>
+        <div class="code-block">users = [<span class="string">"alice"</span>, <span class="string">"bob"</span>, <span class="string">"charlie"</span>]
+
+<span class="keyword">print</span>(users[<span class="number">0</span>])       <span class="comment"># alice (indexing starts at 0)</span>
+<span class="keyword">print</span>(users[-<span class="number">1</span>])      <span class="comment"># charlie (negative counts from end)</span>
+<span class="keyword">print</span>(<span class="fn">len</span>(users))    <span class="comment"># 3</span>
+
+users.append(<span class="string">"dave"</span>)     <span class="comment"># add to end</span>
+users.remove(<span class="string">"bob"</span>)      <span class="comment"># remove by value</span>
+
+<span class="keyword">for</span> user <span class="keyword">in</span> users:
+    <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Hello, {user}"</span>)</div>
+      </div>
+
+      <div class="block">
+        <h5>Dictionaries: key-value pairs</h5>
+        <p>A dictionary is like a contact list. Each key points to a value.</p>
+        <div class="code-block">user = {
+    <span class="string">"name"</span>: <span class="string">"pat"</span>,
+    <span class="string">"role"</span>: <span class="string">"analyst"</span>,
+    <span class="string">"access_level"</span>: <span class="number">3</span>,
+    <span class="string">"active"</span>: <span class="keyword">True</span>
+}
+
+<span class="keyword">print</span>(user[<span class="string">"name"</span>])          <span class="comment"># pat</span>
+<span class="keyword">print</span>(user[<span class="string">"access_level"</span>])  <span class="comment"># 3</span>
+
+user[<span class="string">"access_level"</span>] = <span class="number">5</span>   <span class="comment"># update a value</span>
+user[<span class="string">"department"</span>] = <span class="string">"security"</span>  <span class="comment"># add a new key</span>
+
+<span class="keyword">for</span> key, value <span class="keyword">in</span> user.items():
+    <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"{key}: {value}"</span>)</div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">When to use which</div>
+        <p>Use a list when order matters and you have a bunch of similar things (a list of usernames, IP addresses, event timestamps). Use a dictionary when each item has multiple named properties (a user with name, role, access level). Most real programs use both together: a list of dictionaries.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 6.1: Watchlist check</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Make a list of "suspicious IP addresses" with five fake IPs. Ask the user for an IP. Check whether it is in the list using the <code>in</code> keyword (e.g., <code>if ip in suspicious:</code>). Print either "BLOCKED" or "Allowed".</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">suspicious = [<span class="string">"10.0.0.5"</span>, <span class="string">"192.168.1.101"</span>, <span class="string">"203.0.113.99"</span>, <span class="string">"198.51.100.23"</span>, <span class="string">"172.16.5.8"</span>]
+
+ip = <span class="fn">input</span>(<span class="string">"Check IP: "</span>)
+
+<span class="keyword">if</span> ip <span class="keyword">in</span> suspicious:
+    <span class="keyword">print</span>(<span class="string">"BLOCKED"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Allowed"</span>)</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 6.2: User database</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Create a list of three user dictionaries. Each user has keys: <code>name</code>, <code>role</code>, <code>active</code>. Loop through the list and print only the names of active users (<code>active == True</code>).</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">users = [
+    {<span class="string">"name"</span>: <span class="string">"alice"</span>, <span class="string">"role"</span>: <span class="string">"admin"</span>, <span class="string">"active"</span>: <span class="keyword">True</span>},
+    {<span class="string">"name"</span>: <span class="string">"bob"</span>, <span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"active"</span>: <span class="keyword">False</span>},
+    {<span class="string">"name"</span>: <span class="string">"charlie"</span>, <span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"active"</span>: <span class="keyword">True</span>}
+]
+
+<span class="keyword">for</span> u <span class="keyword">in</span> users:
+    <span class="keyword">if</span> u[<span class="string">"active"</span>]:
+        <span class="keyword">print</span>(u[<span class="string">"name"</span>])</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl6-1"><label for="t-pyl6-1">Completed Exercise 6.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl6-2"><label for="t-pyl6-2">Completed Exercise 6.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 7 -->
+    <div class="week-content" id="py-l7">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 7</div>
+        <h3>Functions: naming a <em>procedure</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">A function is a named block of code you can call later. It lets you write a procedure once and reuse it. This is the core of writing non-spaghetti code.</p>
+        <div class="code-block"><span class="keyword">def</span> <span class="fn">greet</span>(name):
+    <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Hello, {name}"</span>)
+
+<span class="fn">greet</span>(<span class="string">"Pat"</span>)      <span class="comment"># Hello, Pat</span>
+<span class="fn">greet</span>(<span class="string">"Alice"</span>)    <span class="comment"># Hello, Alice</span></div>
+        <p>Anatomy: <code>def</code> means "define a function." <code>greet</code> is the name. <code>(name)</code> is the parameter, the input. Colon, then indented body.</p>
+      </div>
+
+      <div class="block">
+        <h5>Return values</h5>
+        <p>Functions can send a value back with <code>return</code>. That value can be captured in a variable.</p>
+        <div class="code-block"><span class="keyword">def</span> <span class="fn">add</span>(a, b):
+    <span class="keyword">return</span> a + b
+
+result = <span class="fn">add</span>(<span class="number">3</span>, <span class="number">4</span>)
+<span class="keyword">print</span>(result)   <span class="comment"># 7</span></div>
+      </div>
+
+      <div class="block">
+        <h5>Why functions matter</h5>
+        <p>Imagine you need to check password strength in three different places in your code. Without a function, you copy the check logic three times. When you want to update the rule, you update it in three places, and you will forget one. With a function, you write it once, call it three times, and update in one place. Functions are how code stays maintainable.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 7.1: Password strength function</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Turn Exercise 4.1 into a function. The function takes a password as input and returns "Weak", "Medium", or "Strong" (does not print; returns). Call it three times with three different passwords and print the results.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block"><span class="keyword">def</span> <span class="fn">check_strength</span>(password):
+    length = <span class="fn">len</span>(password)
+    <span class="keyword">if</span> length &lt; <span class="number">8</span>:
+        <span class="keyword">return</span> <span class="string">"Weak"</span>
+    <span class="keyword">elif</span> length &lt; <span class="number">12</span>:
+        <span class="keyword">return</span> <span class="string">"Medium"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"Strong"</span>
+
+<span class="keyword">print</span>(<span class="fn">check_strength</span>(<span class="string">"abc"</span>))
+<span class="keyword">print</span>(<span class="fn">check_strength</span>(<span class="string">"mypassword"</span>))
+<span class="keyword">print</span>(<span class="fn">check_strength</span>(<span class="string">"a-very-long-passphrase"</span>))</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 7.2: Multi-criteria check</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Write a function <code>is_strong(password)</code> that returns <code>True</code> only if ALL of these are true: length at least 12, contains at least one digit, contains at least one uppercase letter. Otherwise returns <code>False</code>. Hint: <code>any(c.isdigit() for c in password)</code> checks for digits; same pattern with <code>isupper()</code> for uppercase.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block"><span class="keyword">def</span> <span class="fn">is_strong</span>(password):
+    <span class="keyword">if</span> <span class="fn">len</span>(password) &lt; <span class="number">12</span>:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> <span class="fn">any</span>(c.isdigit() <span class="keyword">for</span> c <span class="keyword">in</span> password):
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> <span class="fn">any</span>(c.isupper() <span class="keyword">for</span> c <span class="keyword">in</span> password):
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    <span class="keyword">return</span> <span class="keyword">True</span>
+
+<span class="keyword">print</span>(<span class="fn">is_strong</span>(<span class="string">"weakpass"</span>))           <span class="comment"># False</span>
+<span class="keyword">print</span>(<span class="fn">is_strong</span>(<span class="string">"Tr0ub4dor-horse-staple"</span>))  <span class="comment"># True</span></div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl7-1"><label for="t-pyl7-1">Completed Exercise 7.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl7-2"><label for="t-pyl7-2">Completed Exercise 7.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 8 -->
+    <div class="week-content" id="py-l8">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 8</div>
+        <h3>Reading and writing <em>files</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Most real security automation involves reading something (a log file, a CSV of users, a config) and writing something back. This is the lesson where Python starts to feel practical.</p>
+      </div>
+
+      <div class="block">
+        <h5>Writing a file</h5>
+        <div class="code-block"><span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"output.txt"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"Line one\n"</span>)
+    f.write(<span class="string">"Line two\n"</span>)</div>
+        <p>The <code>"w"</code> means write mode (overwrites existing content). <code>"a"</code> is append. <code>with</code> is a Python idiom for safely opening files; it closes the file automatically when the block ends.</p>
+      </div>
+
+      <div class="block">
+        <h5>Reading a file</h5>
+        <div class="code-block"><span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"output.txt"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> f:
+    <span class="keyword">for</span> line <span class="keyword">in</span> f:
+        <span class="keyword">print</span>(line.strip())  <span class="comment"># strip removes the newline</span></div>
+      </div>
+
+      <div class="block">
+        <h5>Practical cybersecurity example: log parsing</h5>
+        <p>Imagine a simple log file with lines like this:</p>
+        <div class="code-block">2026-04-21 09:12:03 LOGIN_SUCCESS user=alice ip=10.0.0.5
+2026-04-21 09:12:45 LOGIN_FAIL user=bob ip=10.0.0.12
+2026-04-21 09:13:22 LOGIN_FAIL user=bob ip=10.0.0.12
+2026-04-21 09:13:59 LOGIN_FAIL user=bob ip=10.0.0.12</div>
+        <p>You want to find all failed login attempts. Here is how:</p>
+        <div class="code-block"><span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"auth.log"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> f:
+    <span class="keyword">for</span> line <span class="keyword">in</span> f:
+        <span class="keyword">if</span> <span class="string">"LOGIN_FAIL"</span> <span class="keyword">in</span> line:
+            <span class="keyword">print</span>(line.strip())</div>
+        <p>That is it. That is a legitimate first-cut security monitoring tool. Real GRC analysts run scripts similar in spirit to pull evidence from audit logs.</p>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 8.1: Make a fake log and parse it</div>
+          <div class="exercise-number">Req. 1/2</div>
+        </div>
+        <div class="challenge">Step A: Write a script that creates a file <code>auth.log</code> with the four example lines above. Step B: Write a second script that reads the file and counts how many FAIL events exist, printing the count at the end.</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-label">Part A: make_log.py</div>
+          <div class="code-block">lines = [
+    <span class="string">"2026-04-21 09:12:03 LOGIN_SUCCESS user=alice ip=10.0.0.5\n"</span>,
+    <span class="string">"2026-04-21 09:12:45 LOGIN_FAIL user=bob ip=10.0.0.12\n"</span>,
+    <span class="string">"2026-04-21 09:13:22 LOGIN_FAIL user=bob ip=10.0.0.12\n"</span>,
+    <span class="string">"2026-04-21 09:13:59 LOGIN_FAIL user=bob ip=10.0.0.12\n"</span>,
+]
+<span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"auth.log"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> f:
+    <span class="keyword">for</span> line <span class="keyword">in</span> lines:
+        f.write(line)</div>
+          <div class="code-label">Part B: parse_log.py</div>
+          <div class="code-block">fails = <span class="number">0</span>
+<span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"auth.log"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> f:
+    <span class="keyword">for</span> line <span class="keyword">in</span> f:
+        <span class="keyword">if</span> <span class="string">"LOGIN_FAIL"</span> <span class="keyword">in</span> line:
+            fails = fails + <span class="number">1</span>
+<span class="keyword">print</span>(<span class="fn">f</span><span class="string">"Total failed logins: {fails}"</span>)</div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <div class="exercise-title">Exercise 8.2: Brute-force detector</div>
+          <div class="exercise-number">Req. 2/2</div>
+        </div>
+        <div class="challenge">Extend Exercise 8.1. After reading the log, print the username of any user with 3 or more failed login attempts. Hint: use a dictionary where keys are usernames and values are counts. Extract the username from each line by splitting on spaces and then on "=".</div>
+        <button class="solution-toggle" onclick="toggleSolution(this)">Show Solution</button>
+        <div class="solution">
+          <div class="code-block">counts = {}
+
+<span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"auth.log"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> f:
+    <span class="keyword">for</span> line <span class="keyword">in</span> f:
+        <span class="keyword">if</span> <span class="string">"LOGIN_FAIL"</span> <span class="keyword">in</span> line:
+            <span class="comment"># Line looks like: ... LOGIN_FAIL user=bob ip=10.0.0.12</span>
+            <span class="keyword">for</span> part <span class="keyword">in</span> line.split():
+                <span class="keyword">if</span> part.startswith(<span class="string">"user="</span>):
+                    user = part.split(<span class="string">"="</span>)[<span class="number">1</span>]
+                    counts[user] = counts.get(user, <span class="number">0</span>) + <span class="number">1</span>
+
+<span class="keyword">for</span> user, count <span class="keyword">in</span> counts.items():
+    <span class="keyword">if</span> count &gt;= <span class="number">3</span>:
+        <span class="keyword">print</span>(<span class="fn">f</span><span class="string">"ALERT: {user} has {count} failed logins"</span>)</div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl8-1"><label for="t-pyl8-1">Completed Exercise 8.1</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl8-2"><label for="t-pyl8-2">Completed Exercise 8.2</label></div>
+      </div>
+    </div>
+
+    <!-- PY LESSON 9 -->
+    <div class="week-content" id="py-l9">
+      <div class="week-header">
+        <div class="eyebrow">Python / Lesson 9</div>
+        <h3>Capstone <em>projects</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Pick any two of the four projects below. Build them end to end. These are the projects that should end up in your GitHub portfolio before Phase 3. If you finish all four, even better.</p>
+      </div>
+
+      <details>
+        <summary>Project A: Secure Password Generator</summary>
+        <p><strong>Goal:</strong> Generate a cryptographically random password of user-specified length, with options for uppercase, digits, symbols.</p>
+        <p><strong>Hints:</strong> Use the <code>secrets</code> module (better than <code>random</code> for security). <code>string.ascii_letters</code>, <code>string.digits</code>, <code>string.punctuation</code> give you character sets.</p>
+        <div class="code-block"><span class="keyword">import</span> secrets
+<span class="keyword">import</span> string
+
+<span class="keyword">def</span> <span class="fn">generate_password</span>(length=<span class="number">16</span>, use_symbols=<span class="keyword">True</span>):
+    chars = string.ascii_letters + string.digits
+    <span class="keyword">if</span> use_symbols:
+        chars = chars + string.punctuation
+    <span class="keyword">return</span> <span class="string">""</span>.join(secrets.choice(chars) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="fn">range</span>(length))
+
+<span class="keyword">print</span>(<span class="fn">generate_password</span>(<span class="number">20</span>))</div>
+      </details>
+
+      <details>
+        <summary>Project B: File Hash Checker</summary>
+        <p><strong>Goal:</strong> Given a file, compute its SHA-256 hash. Useful for integrity checks, which is a core GRC concept.</p>
+        <div class="code-block"><span class="keyword">import</span> hashlib
+
+<span class="keyword">def</span> <span class="fn">sha256_of</span>(path):
+    h = hashlib.sha256()
+    <span class="keyword">with</span> <span class="fn">open</span>(path, <span class="string">"rb"</span>) <span class="keyword">as</span> f:
+        <span class="keyword">for</span> chunk <span class="keyword">in</span> <span class="fn">iter</span>(<span class="keyword">lambda</span>: f.read(<span class="number">4096</span>), <span class="string">b""</span>):
+            h.update(chunk)
+    <span class="keyword">return</span> h.hexdigest()
+
+<span class="keyword">print</span>(<span class="fn">sha256_of</span>(<span class="string">"auth.log"</span>))</div>
+      </details>
+
+      <details>
+        <summary>Project C: Basic Log Analyzer (expanded)</summary>
+        <p><strong>Goal:</strong> Given an auth.log file, produce a report: total events, successful logins, failed logins, list of users exceeding 3 failed attempts, and the time range covered.</p>
+        <p>Build on Exercise 8.2. Add: save the report to <code>report.txt</code> using file write. Add timestamps parsing (just extract the date part, no need for full date arithmetic yet). Format nicely with f-strings.</p>
+      </details>
+
+      <details>
+        <summary>Project D: CSV User Importer</summary>
+        <p><strong>Goal:</strong> Read a CSV file of user records, filter for active users, export filtered list to a new CSV. This is almost exactly what GRC analysts do when preparing evidence for audits.</p>
+        <p><strong>Hint:</strong> Use Python's built-in <code>csv</code> module. Don't install anything; it's in the standard library.</p>
+        <div class="code-block"><span class="keyword">import</span> csv
+
+<span class="keyword">with</span> <span class="fn">open</span>(<span class="string">"users.csv"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> infile, <span class="fn">open</span>(<span class="string">"active_users.csv"</span>, <span class="string">"w"</span>, newline=<span class="string">""</span>) <span class="keyword">as</span> outfile:
+    reader = csv.DictReader(infile)
+    writer = csv.DictWriter(outfile, fieldnames=reader.fieldnames)
+    writer.writeheader()
+    <span class="keyword">for</span> row <span class="keyword">in</span> reader:
+        <span class="keyword">if</span> row[<span class="string">"active"</span>].lower() == <span class="string">"true"</span>:
+            writer.writerow(row)</div>
+      </details>
+
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-pyl9-1"><label for="t-pyl9-1">Completed Project A or B</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl9-2"><label for="t-pyl9-2">Completed a second project (any of A/B/C/D)</label></div>
+        <div class="task"><input type="checkbox" id="t-pyl9-3"><label for="t-pyl9-3">Uploaded at least one project to GitHub (make a new public repo called <code>pat-python-projects</code>)</label></div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Where to go next</div>
+        <p>You now know enough Python to survive Course 7 of the Google Cert comfortably. If you want to keep learning beyond this manual: work through Automate the Boring Stuff with Python (free online). It is the single best intermediate Python book for practical work, and its chapters on file handling, web scraping, and regular expressions map directly to GRC work.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =================== PHASE 1 =================== -->
+  <section class="phase-section" id="phase1">
+    <div class="section-intro">
+      <h2>Phase One. <em>The Google Cert.</em></h2>
+      <p>Eight courses on Coursera. Three months at your pace. Every course uses the same study loop: watch, rewrite notes, glossary, Professor Messer pass, labs, one-page summary. Keep Python From Zero running alongside this through Course 7.</p>
+    </div>
+
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="p1-c1">C1. Foundations</button>
+      <button class="week-tab" data-week="p1-c2">C2. Risk</button>
+      <button class="week-tab" data-week="p1-c3">C3. Networks</button>
+      <button class="week-tab" data-week="p1-c4">C4. Linux/SQL</button>
+      <button class="week-tab" data-week="p1-c5">C5. Assets</button>
+      <button class="week-tab" data-week="p1-c6">C6. Detection</button>
+      <button class="week-tab" data-week="p1-c7">C7. Python</button>
+      <button class="week-tab" data-week="p1-c8">C8. Job Prep</button>
+    </div>
+
+    <div class="week-content active" id="p1-c1">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 1 / Weeks 3 to 4</div>
+        <h3>Foundations of <em>Cybersecurity</em></h3>
+        <div class="week-meta"><span>Target: 21 hrs total</span><span>Difficulty: Easy</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">The gentlest course. Covers CIA triad, NIST CSF, job roles, history of major incidents. You already know most vocabulary at a conversational level; this course tightens it to functional level.</p>
+      </div>
+
+      <div class="block">
+        <h5>Standard loop (do for every course)</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c1-1"><label for="t-p1c1-1">Watch all Coursera videos at 1.25x speed, subtitles on, take rough notes</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c1-2"><label for="t-p1c1-2">Do every lab. Predict what each step does before executing.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c1-3"><label for="t-p1c1-3">Complete all quizzes, including ungraded practice</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c1-4"><label for="t-p1c1-4">Add at least 25 new terms to your Obsidian <code>Glossary.md</code></label></div>
+          <div class="task"><input type="checkbox" id="t-p1c1-5"><label for="t-p1c1-5">Watch Professor Messer SY0-701 videos 1.1 through 1.4 on YouTube (free)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c1-6"><label for="t-p1c1-6">Write a one-page summary of the course from memory, then compare to notes</label></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h5>Extra attention on</h5>
+        <p>The NIST Cybersecurity Framework (six functions: Govern, Identify, Protect, Detect, Respond, Recover). Memorize these in order. You will see them referenced in every remaining phase. The CIA triad. The definitions of threat, vulnerability, risk, and control, which people confuse constantly.</p>
+      </div>
+
+      <div class="block">
+        <h5>GRC connection</h5>
+        <p>Prabh Nair's "What is GRC?" YouTube video is mandatory this week. Watch it on day 1 of Course 1 to anchor why you are doing all this. His channel will be your GRC companion for the next eight months.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c2">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 2 / Weeks 4 to 5</div>
+        <h3>Play It Safe: <em>Manage Risks</em></h3>
+        <div class="week-meta"><span>Target: 21 hrs total</span><span>Difficulty: Easy-Medium</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">Your first real GRC material. Risk frameworks, SIEM intro, playbooks, audit concepts. Go slow. This is exactly the work you will do professionally.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c2-1"><label for="t-p1c2-1">Standard loop (videos, notes, glossary, labs, summary)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c2-2"><label for="t-p1c2-2">Watch Professor Messer 5.1 (Governance) and 5.2 (Risk Management)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c2-3"><label for="t-p1c2-3">Watch Prabh Nair's "Risk Management Life Cycle" and "What is GRC" videos</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c2-4"><label for="t-p1c2-4"><strong>Mini-project:</strong> Write a one-page mock risk assessment for a fictional small business. Three risks, likelihood and impact ratings, suggested mitigations. Save to your Projects folder.</label></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">The mini-project matters</div>
+        <p>That one-page risk assessment is your first real GRC artifact. Keep a copy. By the end of the program you should have built five of these, one per major course, progressively better. They become portfolio fuel for your job search in Phase 3.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c3">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 3 / Weeks 5 to 6</div>
+        <h3>Networks and <em>Network Security</em></h3>
+        <div class="week-meta"><span>Target: 21 hrs total</span><span>Difficulty: Medium</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">TCP/IP, OSI model, DNS, DHCP, firewalls, VPNs, wireless, network attacks. You already know what IP/firewall/VPN are conversationally; this deepens that to functional.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c3-1"><label for="t-p1c3-1">Standard loop</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c3-2"><label for="t-p1c3-2">Watch PowerCert Animated Videos "OSI Model Explained" (7 minutes, best visual on YouTube)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c3-3"><label for="t-p1c3-3">Watch Professor Messer networking sections 2.1 and 2.2</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c3-4"><label for="t-p1c3-4">Install Wireshark (free). Run for 5 minutes while browsing. Just see packets with your own eyes. Do not try to understand them all yet.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c3-5"><label for="t-p1c3-5">Memorize the 7 OSI layers in order. Mnemonic: "Please Do Not Throw Sausage Pizza Away" (Physical, Data link, Network, Transport, Session, Presentation, Application)</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c4">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 4 / Weeks 6 to 8</div>
+        <h3>Linux and <em>SQL</em></h3>
+        <div class="week-meta"><span>Target: 30+ hrs total, go slow</span><span>Difficulty: Hard (first wall)</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">The first course where you will hit a wall. This is the one that makes people quit. It will not make you quit because your Phase 0 warmup and Python From Zero work have already softened the landing. But go slow. Budget an extra week if you need it.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c4-1"><label for="t-p1c4-1">Standard loop (expect 30+ hours across two weeks)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c4-2"><label for="t-p1c4-2">Watch NetworkChuck's full "Linux for Hackers" playlist (episodes 6 through end)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c4-3"><label for="t-p1c4-3">Do freeCodeCamp's "Learn SQL in 1 Hour" video on YouTube. Twice.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c4-4"><label for="t-p1c4-4">Do the first 5 tutorials on sqlzoo.net (free SQL practice)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c4-5"><label for="t-p1c4-5">Memorize these 15 Linux commands: <code>ls</code>, <code>cd</code>, <code>pwd</code>, <code>mkdir</code>, <code>rm</code>, <code>cp</code>, <code>mv</code>, <code>cat</code>, <code>grep</code>, <code>chmod</code>, <code>chown</code>, <code>sudo</code>, <code>ps</code>, <code>kill</code>, <code>nano</code></label></div>
+          <div class="task"><input type="checkbox" id="t-p1c4-6"><label for="t-p1c4-6">Memorize these SQL keywords: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>JOIN</code>, <code>GROUP BY</code>, <code>HAVING</code></label></div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-label">If you hit the wall</div>
+        <p>Somewhere around Course 4 Module 2, a feeling will hit that you are not cut out for this. Everyone feels it. It is the first real difficulty and your brain is still calibrating. Slow down. Rewatch the Coursera labs twice instead of once. Post confusions in r/cybersecurity or r/CompTIA; response time is usually under two hours. Skip a section for a day and come back. Do not quit.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c5">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 5 / Weeks 8 to 10</div>
+        <h3>Assets, Threats, <em>Vulnerabilities</em></h3>
+        <div class="week-meta"><span>Target: 25 hrs total</span><span>Difficulty: Medium</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">Another GRC-heavy course. Threat modeling, attack chain, cryptography basics, authentication, vulnerability management. This material comes up in Security+ domain 2 and in every GRC interview.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c5-1"><label for="t-p1c5-1">Standard loop</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c5-2"><label for="t-p1c5-2">Watch Professor Messer sections 1.4, 2.1 through 2.4</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c5-3"><label for="t-p1c5-3">Watch Computerphile "Diffie Hellman" and "AES" videos on YouTube. Cryptography finally clicks.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c5-4"><label for="t-p1c5-4">Watch Prabh Nair's "NIST 800-53" overview video</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c5-5"><label for="t-p1c5-5"><strong>Mini-project:</strong> Pick a real-ish company. List 5 assets, 3 threats per asset, and existing controls for each. 20 minutes of work. GRC analyst day-one task.</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c6">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 6 / Weeks 10 to 11</div>
+        <h3>Detection and <em>Response</em></h3>
+        <div class="week-meta"><span>Target: 21 hrs total</span><span>Difficulty: Medium</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">Incident response lifecycle, packet analysis (Wireshark, tcpdump), SIEM queries, documentation. GRC touches incident response through evidence preservation and post-mortem documentation.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c6-1"><label for="t-p1c6-1">Standard loop</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c6-2"><label for="t-p1c6-2">Watch Professor Messer sections 4.4 through 4.8</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c6-3"><label for="t-p1c6-3">Watch John Hammond or LiveOverflow real-world walkthroughs for motivation</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c6-4"><label for="t-p1c6-4">Do a TryHackMe free room: "Intro to Defensive Security"</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c7">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 7 / Weeks 11 to 13</div>
+        <h3>Automate with <em>Python</em></h3>
+        <div class="week-meta"><span>Target: 25 hrs total</span><span>Difficulty: Medium (thanks to Python From Zero)</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">This is the course that would have been your second wall. Because you have worked Python From Zero alongside Phase 1, it will feel like review. Enjoy that feeling.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c7-1"><label for="t-p1c7-1">Standard loop</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c7-2"><label for="t-p1c7-2">Complete Python From Zero Lesson 9 (projects) in parallel if you haven't already</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c7-3"><label for="t-p1c7-3">Read Chapters 1-3 of "Automate the Boring Stuff with Python" (free online)</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c7-4"><label for="t-p1c7-4">Watch 2-3 Corey Schafer Python tutorials on topics the course struggles to explain clearly</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c7-5"><label for="t-p1c7-5">Upload all Python work to GitHub (the repo you started in Python From Zero Lesson 9)</label></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">The GRC threshold</div>
+        <p>You do not need to become a Python expert. The bar for GRC is: can read someone else's script and understand what it does, can modify a script without breaking it, can write small automation for your own repetitive tasks. You are already at or past that bar.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p1-c8">
+      <div class="week-header">
+        <div class="eyebrow">Phase 1 / Course 8 / Weeks 13 to 14</div>
+        <h3>Put It To <em>Work</em></h3>
+        <div class="week-meta"><span>Target: 15 hrs total</span><span>Difficulty: Easy</span></div>
+      </div>
+
+      <div class="block">
+        <p class="lead">Resumes, interviews, portfolio, incident reports, job search strategy. Take it seriously even though Phases 2 and 3 are still ahead. The work you do here compounds.</p>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p1c8-1"><label for="t-p1c8-1">Standard loop</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c8-2"><label for="t-p1c8-2">Update LinkedIn profile: headline "Aspiring GRC Analyst | Google Cybersecurity Certified". Add cert to the Licenses section.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c8-3"><label for="t-p1c8-3">Create or update GitHub. Pin your Python repo from Lesson 9.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c8-4"><label for="t-p1c8-4">Draft a resume using the course's template. Save as master version.</label></div>
+          <div class="task"><input type="checkbox" id="t-p1c8-5"><label for="t-p1c8-5">Take a genuine 3-day break before starting Phase 2. You earned it.</label></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 2 =================== -->
+  <section class="phase-section" id="phase2">
+    <div class="section-intro">
+      <h2>Phase Two. <em>Security+.</em></h2>
+      <p>The credential that actually moves the needle with recruiters. SY0-701 exam: up to 90 questions including simulations, 90 minutes, pass at 750/900. Ten weeks of focused prep.</p>
+    </div>
+
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="p2-w1">Weeks 15-16</button>
+      <button class="week-tab" data-week="p2-w2">Weeks 17-18</button>
+      <button class="week-tab" data-week="p2-w3">Weeks 19-20</button>
+      <button class="week-tab" data-week="p2-w4">Weeks 21-22</button>
+      <button class="week-tab" data-week="p2-w5">Week 23</button>
+      <button class="week-tab" data-week="p2-w6">Week 24: Exam</button>
+    </div>
+
+    <div class="week-content active" id="p2-w1">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Weeks 15-16</div>
+        <h3>Professor Messer <em>full course</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">Free, on YouTube, the canonical Security+ course. Watch at 1x speed, not 1.25x. This is core material.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w1-1"><label for="t-p2w1-1">Watch the full Professor Messer SY0-701 course on YouTube (about 40 hours)</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w1-2"><label for="t-p2w1-2">Take notes on every video. Add new terms to glossary.</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w1-3"><label for="t-p2w1-3">Join r/CompTIA subreddit</label></div>
+        </div>
+      </div>
+      <div class="block">
+        <h5>The five domains</h5>
+        <table class="data-table">
+          <thead><tr><th>Domain</th><th>Weight</th><th>What's in it</th></tr></thead>
+          <tbody>
+            <tr><td>1. General Security Concepts</td><td>12%</td><td>Foundations, frameworks, change management</td></tr>
+            <tr><td>2. Threats &amp; Vulnerabilities</td><td>22%</td><td>Attack types, defenses</td></tr>
+            <tr><td>3. Security Architecture</td><td>18%</td><td>Secure design, cloud, infrastructure</td></tr>
+            <tr><td>4. Security Operations</td><td>28%</td><td>Monitoring, response, hardening (biggest)</td></tr>
+            <tr><td>5. Program Management</td><td>20%</td><td>Governance, risk, compliance (your GRC sweet spot)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="week-content" id="p2-w2">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Weeks 17-18</div>
+        <h3>Jason Dion <em>course</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">Different angle on the same material. More practical, more exam-focused. Available on Udemy for around $15 during their frequent sales.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w2-1"><label for="t-p2w2-1">Buy Jason Dion's SY0-701 course on Udemy (wait for a sale if needed)</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w2-2"><label for="t-p2w2-2">Watch full course, take notes</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w2-3"><label for="t-p2w2-3">Update glossary with any new acronyms</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p2-w3">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Weeks 19-20</div>
+        <h3>Read a <em>book</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">You listed "reading" as a learning preference. Now it pays off. Pick one: the official CompTIA SY0-701 Study Guide, or Mike Meyers' SY0-701 All-in-One Exam Guide, or Darril Gibson's "Get Certified Get Ahead." All are roughly equivalent in quality.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w3-1"><label for="t-p2w3-1">Obtain one Security+ study book</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w3-2"><label for="t-p2w3-2">Read cover to cover, taking notes as you go</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w3-3"><label for="t-p2w3-3">Highlight any topic where the book goes deeper than Messer/Dion did</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p2-w4">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Weeks 21-22</div>
+        <h3>Practice exams, <em>brutally</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">The single most important phase of Security+ prep. Two weeks of nothing but taking and reviewing practice exams.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w4-1"><label for="t-p2w4-1">Buy Jason Dion's 6 practice exams on Udemy</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w4-2"><label for="t-p2w4-2">Take all 6. Fail the first one. That is normal.</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w4-3"><label for="t-p2w4-3">For every wrong answer: write in your glossary a sentence explaining why the right answer is right</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w4-4"><label for="t-p2w4-4">Optional: buy CompTIA CertMaster Practice ($150). Higher quality than Udemy but expensive.</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w4-5"><label for="t-p2w4-5"><strong>Before booking the real exam, score 85%+ on three different practice exams</strong></label></div>
+        </div>
+      </div>
+      <div class="callout warning">
+        <div class="callout-label">Do not book until</div>
+        <p>Do not book the real exam until you are consistently hitting 85% on practice. Otherwise you are paying $400 to gather information you could have gathered for $15 in a practice test. Wait.</p>
+      </div>
+    </div>
+
+    <div class="week-content" id="p2-w5">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Week 23</div>
+        <h3>Hands-on <em>reinforcement</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">Concepts stick harder when you have done them in a live lab. Spend this week on TryHackMe.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w5-1"><label for="t-p2w5-1">Sign up for TryHackMe (free tier is fine)</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w5-2"><label for="t-p2w5-2">Complete "Pre Security" learning path</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w5-3"><label for="t-p2w5-3">Start "Cyber Security 101" path (you won't finish all of it; just put in the hours)</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w5-4"><label for="t-p2w5-4">Review weak domains from your practice exams</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w5-5"><label for="t-p2w5-5">Book the Pearson VUE exam for end of Week 24</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p2-w6">
+      <div class="week-header">
+        <div class="eyebrow">Phase 2 / Week 24</div>
+        <h3>Exam <em>week</em></h3>
+      </div>
+      <div class="block">
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p2w6-1"><label for="t-p2w6-1">Monday-Tuesday: review glossary and wrong-answer notes</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w6-2"><label for="t-p2w6-2">Wednesday: light review of weak domains only, no new material</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w6-3"><label for="t-p2w6-3">Thursday: rest day. Watch a movie. Do not study.</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w6-4"><label for="t-p2w6-4">Friday morning: take the exam. Bring two IDs. Arrive 30 minutes early.</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w6-5"><label for="t-p2w6-5">Post-exam: add Security+ to LinkedIn, resume, email signature</label></div>
+          <div class="task"><input type="checkbox" id="t-p2w6-6"><label for="t-p2w6-6">Take a genuine 3-day break before Phase 3</label></div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-label">Test day strategy</div>
+        <p>Performance-based questions (simulations) appear at the start and are the hardest. You can flag and skip them, answer the multiple choice first to build confidence, then come back to the simulations. This is a common and effective strategy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PHASE 3 =================== -->
+  <section class="phase-section" id="phase3">
+    <div class="section-intro">
+      <h2>Phase Three. <em>GRC Mastery.</em></h2>
+      <p>Stop being a generalist student. Become a specialist candidate. Frameworks, tooling, portfolio, warm outreach, job applications.</p>
+    </div>
+
+    <div class="week-tabs">
+      <button class="week-tab active" data-week="p3-w1">Weeks 25-27</button>
+      <button class="week-tab" data-week="p3-w2">Weeks 28-30</button>
+      <button class="week-tab" data-week="p3-w3">Weeks 31-33</button>
+      <button class="week-tab" data-week="p3-w4">Weeks 34-36</button>
+    </div>
+
+    <div class="week-content active" id="p3-w1">
+      <div class="week-header">
+        <div class="eyebrow">Phase 3 / Weeks 25-27</div>
+        <h3>Framework <em>deep dives</em></h3>
+      </div>
+
+      <div class="block">
+        <p class="lead">Three weeks, three framework clusters. NIST, then ISO 27001, then SOC 2 and others.</p>
+      </div>
+
+      <div class="block">
+        <h5>The eight frameworks you need to know</h5>
+        <table class="data-table">
+          <thead><tr><th>Framework</th><th>What it is</th><th>Where used</th></tr></thead>
+          <tbody>
+            <tr><td>NIST CSF 2.0</td><td>"How to think about security" (Govern, Identify, Protect, Detect, Respond, Recover)</td><td>Broad, US-centric, industry-agnostic</td></tr>
+            <tr><td>NIST 800-53</td><td>Detailed control catalog</td><td>US federal systems, defense</td></tr>
+            <tr><td>ISO 27001 / 27002</td><td>International info security management standard</td><td>Global enterprises</td></tr>
+            <tr><td>SOC 2</td><td>Auditor-driven, five trust services criteria</td><td>SaaS companies (very common)</td></tr>
+            <tr><td>PCI DSS</td><td>Credit card data protection</td><td>Anyone processing payments</td></tr>
+            <tr><td>HIPAA</td><td>Healthcare data protection</td><td>Healthcare, pharma</td></tr>
+            <tr><td>GDPR / CCPA</td><td>Privacy laws</td><td>EU / California data</td></tr>
+            <tr><td>CMMC</td><td>Required for DoD contractors</td><td>Defense contracting (growing)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p3w1-1"><label for="t-p3w1-1">Download NIST CSF 2.0 PDF from nist.gov/cyberframework. Read cover to cover.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-2"><label for="t-p3w1-2">Watch Prabh Nair's full NIST playlist</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-3"><label for="t-p3w1-3">Watch Prabh Nair's ISO 27001 playlist</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-4"><label for="t-p3w1-4">Watch Prabh Nair's SOC 2 overview</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-5"><label for="t-p3w1-5">Read a public SOC 2 report. Vanta and Drata publish theirs. Just try to read one.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-6"><label for="t-p3w1-6">Skim NIST 800-53 control families (do not try to memorize controls)</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w1-7"><label for="t-p3w1-7">Read ISACA's CRISC and CISA exam outlines (free on their site). You are not sitting for these; the outlines just teach you what the industry values.</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p3-w2">
+      <div class="week-header">
+        <div class="eyebrow">Phase 3 / Weeks 28-30</div>
+        <h3>GRC <em>tooling</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">Modern GRC work happens inside specific platforms. Knowing any one of them makes you instantly more employable. Free training options exist for the newer ones.</p>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p3w2-1"><label for="t-p3w2-1">Sign up for Vanta's free "Vanta Academy" or Drata's free learner program</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w2-2"><label for="t-p3w2-2">Complete the full certification course from whichever you chose</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w2-3"><label for="t-p3w2-3">Create a free ServiceNow developer account at developer.servicenow.com; explore the GRC module</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w2-4"><label for="t-p3w2-4">Read one "GRC tools comparison" article to understand the market (Gartner, G2, or Capterra)</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w2-5"><label for="t-p3w2-5">Optional: sit for ISC2's free Certified in Cybersecurity (CC) exam. Low-cost, entry-level, respected.</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p3-w3">
+      <div class="week-header">
+        <div class="eyebrow">Phase 3 / Weeks 31-33</div>
+        <h3>Portfolio <em>projects</em></h3>
+      </div>
+      <div class="block">
+        <p class="lead">Three visible artifacts. Hiring is partly credential-based, partly "show me you understand the work." These are the artifacts.</p>
+      </div>
+      <div class="block">
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p3w3-1"><label for="t-p3w3-1"><strong>Project 1: NIST CSF-mapped risk assessment.</strong> 5-8 pages. Fictional or real small company. Identify assets, threats, vulnerabilities, likelihood, impact, current controls, recommended controls. Publish as PDF on GitHub or LinkedIn article.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w3-2"><label for="t-p3w3-2"><strong>Project 2: Policy document package.</strong> Three mock policies (Acceptable Use, Access Control, Incident Response), 2-4 pages each. Demonstrates you know structure and tone.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w3-3"><label for="t-p3w3-3"><strong>Project 3: SOC 2 readiness checklist.</strong> For a small SaaS company. Mapped to the five trust services criteria. This alone has landed people GRC roles.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w3-4"><label for="t-p3w3-4">Put all three in a public GitHub repo: <code>pat-grc-portfolio</code></label></div>
+          <div class="task"><input type="checkbox" id="t-p3w3-5"><label for="t-p3w3-5">Link repo from LinkedIn profile featured section</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-content" id="p3-w4">
+      <div class="week-header">
+        <div class="eyebrow">Phase 3 / Weeks 34-36</div>
+        <h3>Job <em>search</em></h3>
+      </div>
+      <div class="block">
+        <h5>Target titles</h5>
+        <p>GRC Analyst, Compliance Analyst, IT Auditor, Risk Analyst, Information Security Analyst, Third-Party Risk Analyst, Privacy Analyst.</p>
+      </div>
+      <div class="block">
+        <h5>Target employers</h5>
+        <p>Regulated industries first: financial services, healthcare, SaaS, defense contractors. Consulting firms (Deloitte, PwC, EY, KPMG, Protiviti) hire in volume and are career-changer friendly.</p>
+      </div>
+      <div class="block">
+        <h5>Tasks</h5>
+        <div class="tasks">
+          <div class="task"><input type="checkbox" id="t-p3w4-1"><label for="t-p3w4-1">Set up job alerts on LinkedIn and Indeed for target titles</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w4-2"><label for="t-p3w4-2">Apply to at least 10 jobs per week from Week 34 on</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w4-3"><label for="t-p3w4-3"><strong>Warm outreach:</strong> message 5 GRC analysts per week on LinkedIn. Ask for 15-min "how did you get into this field" conversations. 1 in 10 will say yes. Over 6 weeks, that is 3 conversations that could change your trajectory.</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w4-4"><label for="t-p3w4-4">Join your local ISACA chapter (isaca.org; many offer free student memberships)</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w4-5"><label for="t-p3w4-5">Prepare STAR-method interview answers for common questions: "Tell me about a time you managed risk," "Walk me through a risk assessment you did"</label></div>
+          <div class="task"><input type="checkbox" id="t-p3w4-6"><label for="t-p3w4-6">Keep applying. First offer typically arrives 6-12 weeks after starting an active search.</label></div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-label">Salary expectations</div>
+        <p>US entry-level GRC roles typically pay $65K to $90K depending on location, industry, and clearance. Consulting firms and regulated industries (banking, defense, healthcare) tend to pay higher for the same title. Remote-friendly GRC roles exist but competition is heavier.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== HABITS =================== -->
+  <section class="phase-section" id="habits">
+    <div class="section-intro">
+      <h2>Supporting <em>habits</em></h2>
+      <p>The meta-skills that run through all 36 weeks. Skip these and the phase content drifts. Practice these and the phase content compounds.</p>
+    </div>
+
+    <div class="block">
+      <h4>Note-taking system</h4>
+      <p>Use Obsidian. Keep exactly these four files, updated continuously:</p>
+      <table class="data-table">
+        <thead><tr><th>File</th><th>What goes in it</th></tr></thead>
+        <tbody>
+          <tr><td><code>Glossary.md</code></td><td>Every acronym and term, in your own words. Will be 200+ entries by end of Phase 1.</td></tr>
+          <tr><td><code>Questions.md</code></td><td>Things you do not understand yet. Revisit weekly; cross off what clicked.</td></tr>
+          <tr><td><code>Projects.md</code></td><td>Every lab, mini-project, or write-up you complete, with one sentence on what it did.</td></tr>
+          <tr><td><code>Weekly-Review.md</code></td><td>Sunday evening ritual. Non-negotiable. See below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="block">
+      <h4>The Sunday weekly review</h4>
+      <p>Thirty minutes, every Sunday evening. Answer these four questions in writing:</p>
+      <ol style="margin-left: 20px; margin-top: 8px;">
+        <li style="margin-bottom: 6px;">What did I actually learn this week that I could explain to someone who asked?</li>
+        <li style="margin-bottom: 6px;">What confused me and what am I doing about it?</li>
+        <li style="margin-bottom: 6px;">Did I hit my 21 hours? If not, what broke?</li>
+        <li>What are the three most important things to do next week?</li>
+      </ol>
+      <p style="margin-top: 14px;">Skip this for two weeks in a row and your plan silently drifts. This one practice is what keeps people on track across a 9-month arc.</p>
+    </div>
+
+    <div class="block">
+      <h4>When you get stuck</h4>
+      <p>"Stuck" means a concept has not clicked after three honest attempts. When that happens:</p>
+      <div class="tasks">
+        <div class="task"><input type="checkbox" id="t-stuck-1"><label for="t-stuck-1">Search the topic on YouTube with "explained simply" or "for beginners" appended. Different teachers unlock different brains.</label></div>
+        <div class="task"><input type="checkbox" id="t-stuck-2"><label for="t-stuck-2">Post the question in r/cybersecurity, r/CompTIA, or r/learnpython. Include what you already tried. Response time usually under two hours.</label></div>
+        <div class="task"><input type="checkbox" id="t-stuck-3"><label for="t-stuck-3">Ask in Simply Cyber Nation Discord or The Cyber Mentor Discord beginners channels.</label></div>
+        <div class="task"><input type="checkbox" id="t-stuck-4"><label for="t-stuck-4">If still stuck: skip for a week and come back. Some concepts click only after adjacent ones land.</label></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>High-risk weeks</h4>
+      <p>Two moments are statistically when people quit. Plan for them.</p>
+      <div class="callout warning">
+        <div class="callout-label">Risk point 1: Course 4, around Week 7</div>
+        <p>Linux and SQL. The first real wall. If you feel "maybe I am not cut out for this," that is the feeling everyone gets here. Slow down, do not quit. See the Course 4 page for tactics.</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-label">Risk point 2: First Security+ practice exam, around Week 21</div>
+        <p>You will probably fail the first practice exam by a wide margin. Everyone does. Failing the practice exam is the diagnostic, not the verdict. Review wrong answers methodically. Take the next one a week later. Your score will jump.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Communities</h4>
+      <p>Join in Week 3 (do not wait until later):</p>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype free">Discord · Free</div><div class="rname">Simply Cyber Nation</div><div class="rdesc">Gerald Auger's community. Beginner-friendly, GRC-heavy.</div></div>
+        <div class="resource"><div class="rtype free">Discord · Free</div><div class="rname">The Cyber Mentor</div><div class="rdesc">Heath Adams's community. Mixed content, strong beginner channels.</div></div>
+        <div class="resource"><div class="rtype free">Discord · Free</div><div class="rname">TryHackMe Official</div><div class="rdesc">Help for specific rooms, general cyber questions.</div></div>
+        <div class="resource"><div class="rtype free">Reddit · Free</div><div class="rname">r/cybersecurity, r/CompTIA, r/GRC, r/CybersecurityCareers</div><div class="rdesc">Subscribe and lurk daily. Most useful career advice lives here.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Staying motivated</h4>
+      <p>You said finishing what you start is part of why this matters. Use that. The simplest motivation tool is also the best: a physical paper checklist with 36 weeks on it, taped to your wall or bathroom mirror. Cross one off every Sunday. Visible progress compounds.</p>
+      <p>Also: follow three specific people on LinkedIn who are doing the job you want. Their posts will pop up in your feed. They make the destination feel real.</p>
+    </div>
+  </section>
+
+  <!-- =================== RESOURCES =================== -->
+  <section class="phase-section" id="resources">
+    <div class="section-intro">
+      <h2>Resource <em>library</em></h2>
+      <p>Everything referenced in this manual, organized by type. Bookmark this page.</p>
+    </div>
+
+    <div class="block">
+      <h4>Free YouTube channels</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Professor Messer</div><div class="rdesc">Free full Security+ course. The gold standard.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Prabh Nair</div><div class="rdesc">Best free GRC channel on YouTube. Required viewing.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">NetworkChuck</div><div class="rdesc">Energetic, beginner-friendly. Great for Linux and networking.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Simply Cyber (Gerald Auger)</div><div class="rdesc">Daily threat briefs, GRC content, career advice.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">David Bombal</div><div class="rdesc">Deep networking content.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">PowerCert Animated</div><div class="rdesc">Short, clear networking animations.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Josh Madakor</div><div class="rdesc">Project-based security tutorials.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">John Hammond</div><div class="rdesc">Offensive security walkthroughs. Pure motivation.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">LiveOverflow</div><div class="rdesc">Why-things-work explanations.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">13Cubed</div><div class="rdesc">Forensics and detection.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Computerphile</div><div class="rdesc">CS and crypto fundamentals, accessible.</div></div>
+        <div class="resource"><div class="rtype free">Channel · Free</div><div class="rname">Corey Schafer</div><div class="rdesc">Best Python teacher on YouTube.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Paid resources (all budget-friendly)</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype paid">Subscription · ~$49/mo</div><div class="rname">Coursera Plus</div><div class="rdesc">Required for the Google Cert. Financial aid available.</div></div>
+        <div class="resource"><div class="rtype paid">Udemy · ~$15 on sale</div><div class="rname">Jason Dion SY0-701 course</div><div class="rdesc">Different angle than Messer. Wait for Udemy's constant sales.</div></div>
+        <div class="resource"><div class="rtype paid">Udemy · ~$15 on sale</div><div class="rname">Jason Dion practice exams</div><div class="rdesc">Six full practice tests for Security+.</div></div>
+        <div class="resource"><div class="rtype paid">Book · ~$30</div><div class="rname">Mike Meyers SY0-701 book</div><div class="rdesc">Or Darril Gibson's "Get Certified Get Ahead." Either works.</div></div>
+        <div class="resource"><div class="rtype paid">Official · ~$150</div><div class="rname">CompTIA CertMaster Practice</div><div class="rdesc">Optional. Higher quality than Udemy. Expensive.</div></div>
+        <div class="resource"><div class="rtype paid">Exam · ~$400</div><div class="rname">Security+ voucher (Pearson VUE)</div><div class="rdesc">Google Cert discount applies.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Hands-on labs</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype free">Free tier</div><div class="rname">TryHackMe</div><div class="rdesc">Browser-based, beginner-friendly. $10/mo for premium.</div></div>
+        <div class="resource"><div class="rtype free">Free tier</div><div class="rname">HackTheBox Academy</div><div class="rdesc">More advanced. Save for after Security+.</div></div>
+        <div class="resource"><div class="rtype free">Free tier</div><div class="rname">Cybrary</div><div class="rdesc">Mixed quality, but has a free GRC track.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">sqlzoo.net</div><div class="rdesc">Free SQL practice tutorials.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">webminal.org</div><div class="rdesc">Browser-based Linux terminal, no install.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>GRC-specific</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Vanta Academy</div><div class="rdesc">Free GRC tool training + certification.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Drata learner program</div><div class="rdesc">Free GRC tool training.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">ServiceNow developer account</div><div class="rdesc">Hands-on enterprise GRC platform.</div></div>
+        <div class="resource"><div class="rtype free">Free PDF</div><div class="rname">NIST CSF 2.0 PDF</div><div class="rdesc">From nist.gov/cyberframework. Read cover to cover.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">ISACA CRISC/CISA exam outlines</div><div class="rdesc">Free download. Teaches industry priorities.</div></div>
+        <div class="resource"><div class="rtype paid">Free/$50 student</div><div class="rname">ISACA local chapter</div><div class="rdesc">Many offer free or discounted student membership.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Books (pick one or two)</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype paid">~$35</div><div class="rname">CompTIA Security+ SY0-701 Cert Guide</div><div class="rdesc">Darril Gibson. The classic.</div></div>
+        <div class="resource"><div class="rtype paid">~$40</div><div class="rname">Mike Meyers' Security+ All-in-One</div><div class="rdesc">More conversational, heavy.</div></div>
+        <div class="resource"><div class="rtype free">Free online</div><div class="rname">Automate the Boring Stuff with Python</div><div class="rdesc">automatetheboringstuff.com. Free to read online.</div></div>
+        <div class="resource"><div class="rtype paid">~$20</div><div class="rname">Tribe of Hackers</div><div class="rdesc">Marcus Carey. Career-focused interviews.</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Tools to install on your machine</h4>
+      <div class="resource-grid">
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">VSCode</div><div class="rdesc">Editor. code.visualstudio.com.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Python 3.12+</div><div class="rdesc">python.org or Microsoft Store.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Obsidian</div><div class="rdesc">Note-taking. obsidian.md.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Wireshark</div><div class="rdesc">Packet analyzer. wireshark.org.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Bitwarden</div><div class="rdesc">Password manager. bitwarden.com.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">Discord</div><div class="rdesc">For study communities.</div></div>
+        <div class="resource"><div class="rtype free">Free</div><div class="rname">WSL Ubuntu (Windows only)</div><div class="rdesc">Real Linux inside Windows. <code>wsl --install</code></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="sig">Finish what you start.</p>
+    <p>Field Manual v1.0 · Built for Pat · 36 weeks · 756 hours · one offer at the other side</p>
+    <p style="margin-top: 10px;">Use Cmd/Ctrl+P to print. Your progress is saved in this browser.</p>
+  </footer>
+
+</div>
+
+<script>
+// TAB NAVIGATION
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.phase-section');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.phase;
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    sections.forEach(s => s.classList.toggle('active', s.id === target));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+});
+
+// WEEK TAB NAVIGATION
+document.querySelectorAll('.week-tab').forEach(weekTab => {
+  weekTab.addEventListener('click', () => {
+    const section = weekTab.closest('.phase-section');
+    const target = weekTab.dataset.week;
+    section.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+    weekTab.classList.add('active');
+    section.querySelectorAll('.week-content').forEach(c => c.classList.toggle('active', c.id === target));
+  });
+});
+
+// CHECKBOX PERSISTENCE
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+const STORAGE_KEY = 'pat-roadmap-progress';
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    checkboxes.forEach(cb => {
+      if (saved[cb.id]) cb.checked = true;
+    });
+  } catch(e) { console.warn('Could not load progress:', e); }
+  updateProgress();
+}
+
+function saveProgress() {
+  const state = {};
+  checkboxes.forEach(cb => { if (cb.checked) state[cb.id] = true; });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) { console.warn('Could not save progress:', e); }
+}
+
+function updateProgress() {
+  const total = checkboxes.length;
+  const done = Array.from(checkboxes).filter(cb => cb.checked).length;
+  const pct = total ? (done / total) * 100 : 0;
+  document.getElementById('progress-count').textContent = done;
+  document.getElementById('progress-total').textContent = total;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+checkboxes.forEach(cb => {
+  cb.addEventListener('change', () => {
+    saveProgress();
+    updateProgress();
+  });
+});
+
+// SOLUTION TOGGLE
+function toggleSolution(btn) {
+  const solution = btn.nextElementSibling;
+  const isOpen = solution.classList.toggle('visible');
+  btn.textContent = isOpen ? 'Hide Solution' : 'Show Solution';
+}
+
+// INIT
+loadProgress();
+</script>
+
+</body>
+</html>
